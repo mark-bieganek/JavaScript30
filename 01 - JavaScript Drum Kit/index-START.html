@@ -59,6 +59,42 @@
 
 <script>
 
+/**
+ * Function that plays a sound when a key is pressed
+ * @param   {Object} e    Event.
+ */
+function playSound(e) {
+  // Retrieves the related audio element.
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+  // Retrieves the related div element.
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+  // Stops the function if the key pressed is not recognized.
+  if(!audio) return;
+  // Allows successive play of the same sound.
+  audio.currentTime = 0;
+  // Changes the visual appearance of the key while playing.
+  key.classList.toggle('playing');
+  // Plays the sound.
+  audio.play();
+}
+
+/**
+ * Function that removes the visual transition after a sound has played.
+ * @param   {Object} e    Event.
+ */
+function removeTransition(e) {
+  if(e.propertyName !== 'transform') return;
+  this.classList.remove('playing');
+}
+
+// Listens for a key press.
+window.addEventListener('keydown', playSound);
+
+// Resets visual appearance when the sound is done playing.
+const keys = document.querySelectorAll('.key');
+keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+
 </script>
 
 
